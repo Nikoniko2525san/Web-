@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>ダッシュボード</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>リンク作成</h2>
+    <form id="shorten-form">
+      <input type="url" name="original_url" placeholder="URLを入力" required>
+      <button type="submit">短縮</button>
+    </form>
+    <div id="result"></div>
+    <script>
+      document.getElementById('shorten-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const res = await fetch('/links/create', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            original_url: this.original_url.value
+          })
+        });
+        const data = await res.json();
+        document.getElementById('result').innerText = "短縮URL: " + data.short_url;
+      });
+    </script>
+  </div>
+</body>
+</html>
